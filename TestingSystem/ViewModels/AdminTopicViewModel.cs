@@ -13,21 +13,21 @@ using TestingSystem.TestingSystemDbContext;
 
 namespace TestingSystem.ViewModels
 {
-    class AdminTopicViewModel : Caliburn.Micro.Screen
+    class AdminTopicViewModel : Caliburn.Micro.Screen , IHandle<NavigateToMessage>
     {
+        private readonly IEventAggregator _eventAggregator;
         private byte[] _topicImage;
         private string _topicText;
         private Visibility _topicImageEditorVisibility = Visibility.Collapsed;
         private Visibility _topicImageAddButtonVisibility;
 
-        public AdminTopicViewModel(Topic topic)
+        public AdminTopicViewModel(IEventAggregator eventAggregator)
         {
-            Topic = topic;
-            TopicImage = Topic.Image;
-            TopicText = Topic.Text;
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
         }
 
-        public TestingSystemContext Context { get; set; } = new TestingSystemContext();
+        public TestingSystemContext Context { get; set; }
 
         public Topic Topic { get; set; }
 
@@ -46,7 +46,7 @@ namespace TestingSystem.ViewModels
                     TopicImageAddButtonVisibility = Visibility.Visible;
                 }
                 NotifyOfPropertyChange(() => TopicImage);
-                NotifyOfPropertyChange(() => CanSaveTopic);
+                NotifyOfPropertyChange(() => CanTopicSave);
             }
         }
 
@@ -57,7 +57,7 @@ namespace TestingSystem.ViewModels
             {
                 _topicText = value;
                 NotifyOfPropertyChange(() => TopicText);
-                NotifyOfPropertyChange(() => CanSaveTopic);
+                NotifyOfPropertyChange(() => CanTopicSave);
             }
         }
 
@@ -87,7 +87,7 @@ namespace TestingSystem.ViewModels
             }
         }
 
-        public bool CanSaveTopic
+        public bool CanTopicSave
         {
            get
             {
@@ -104,12 +104,12 @@ namespace TestingSystem.ViewModels
             }
         }
 
-        public void SaveTopic ()
+        public void TopicSave()
         {
             Topic.Image = TopicImage;
             Topic.Text = TopicText;
             Context.SaveChanges();
-            NotifyOfPropertyChange(() => CanSaveTopic);
+            NotifyOfPropertyChange(() => CanTopicSave);
         }
 
         public void TopicImageDelete()
@@ -135,6 +135,18 @@ namespace TestingSystem.ViewModels
         public void TopicImageMouseLeave()
         {
             TopicImageEditorVisibility = Visibility.Collapsed;
+        }
+
+        public void Handle(NavigateToMessage message)
+        {
+            if (message.Message is Topic)
+            {
+                Context = message.Context;
+                Topic = message.Message as Topic;
+                TopicImage = Topic.Image;
+                TopicText = Topic.Text;
+            }
+
         }
     }
 }

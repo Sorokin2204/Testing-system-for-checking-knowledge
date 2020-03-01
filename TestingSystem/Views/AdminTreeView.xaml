@@ -131,10 +131,34 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <DockPanel>
-            
-                
-            </DockPanel>
+            <md:ColorZone md:ColorZoneAssist.Mode="PrimaryMid" >
+                <Grid Visibility="{Binding CountQuestionsVisibility}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" x:Name="QuestionDelete">
+                        <md:PackIcon Kind="DeleteOutline"/>
+                    </Button>
+                    <StackPanel Grid.Column="1"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NavigateToPreviousQuestion">
+                            <md:PackIcon Kind="ArrowLeft" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                        <TextBlock Text="{Binding NumberQuestion}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">/</TextBlock>
+                        <TextBlock Text="{Binding SelectedItem.Questions.Count}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="NavigateToNextQuestion">
+                            <md:PackIcon Kind="ArrowRight" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+
+                    <Button Grid.Column="2" x:Name="QuestionAdd">
+                        <md:PackIcon Kind="Add"/>
+                </Button>
+               
+            </Grid>
+            </md:ColorZone>
             <ContentControl Grid.Row="1" x:Name="ActiveItem"/>
         </Grid>
     </Grid>

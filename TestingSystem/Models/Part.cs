@@ -18,9 +18,12 @@ namespace TestingSystem.Models
         public virtual Section Section { get; set; }
 
         public virtual ICollection<Topic> Topics { get; set; }
+        public virtual ICollection<Question> Questions {get; set; }
+
         public Part()
         {
             Topics = new ObservableCollection<Topic>();
+            Questions = new ObservableCollection<Question>();
         }
     }
 }

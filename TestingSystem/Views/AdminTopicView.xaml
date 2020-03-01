@@ -26,7 +26,7 @@
             </Grid>
 
             <TextBox x:Name="TopicText" md:HintAssist.Hint="Введите текст темы" />
-            <Button x:Name="SaveTopic" Content="Сохранить"/>
+            <Button x:Name="TopicSave" Content="Сохранить"/>
 
         </StackPanel>
     </Grid>

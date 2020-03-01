@@ -17,10 +17,22 @@ namespace TestingSystem.ViewModels
 {
     class AdminTreeViewModel : Conductor<Screen>.Collection.OneActive
     {
+        private readonly IEventAggregator _eventAggregator;
+        private readonly AdminTopicViewModel _adminTopicViewModel;
+        private readonly AdminQuestionViewModel _adminQuestionViewModel;
         private dynamic _selectedItem;
+        private Visibility _countQuestionsVisibility = Visibility.Collapsed;
+        private int _numberQuestion;
 
-        public AdminTreeViewModel()
+        public AdminTreeViewModel(
+            IEventAggregator eventAggregator,
+            AdminTopicViewModel adminTopicViewModel,
+            AdminQuestionViewModel adminQuestionViewModel
+            )
         {
+            _eventAggregator = eventAggregator;
+            _adminTopicViewModel = adminTopicViewModel;
+            _adminQuestionViewModel = adminQuestionViewModel;
             Context = new TestingSystemContext();
             Context.Sections.Load();
         }
@@ -42,14 +54,53 @@ namespace TestingSystem.ViewModels
             }
         }
 
+
+        public Visibility CountQuestionsVisibility
+        {
+            get { return _countQuestionsVisibility; }
+            set
+            {
+                _countQuestionsVisibility = value;
+                NotifyOfPropertyChange(() => CountQuestionsVisibility);
+            }
+        }
+
+        public int NumberQuestion
+        {
+            get { return _numberQuestion; }
+            set
+            {
+                _numberQuestion = value;
+                NavigateToQuestion(_numberQuestion - 1);
+                NotifyOfPropertyChange(() => NumberQuestion);
+                NotifyOfPropertyChange(() => CanNavigateToPreviousQuestion);
+                NotifyOfPropertyChange(() => CanNavigateToNextQuestion);
+                NotifyOfPropertyChange(() => CanQuestionDelete);
+            }
+        }
+
         public void SelectedItemChanged(object obj)
         {
             IsInEditMode = false;
             SelectedItem = obj;
-            if (obj is Topic)
+
+            if(SelectedItem is Section)
             {
-                ActivateItem(new AdminTopicViewModel(SelectedItem));
+                CountQuestionsVisibility = Visibility.Collapsed;
             }
+            if(SelectedItem is Part)
+            {
+                CountQuestionsVisibility = Visibility.Visible;
+                NumberQuestion = 1;
+            }
+            else
+            if (SelectedItem is Topic)
+            {
+                CountQuestionsVisibility = Visibility.Collapsed;
+                _eventAggregator.PublishOnUIThread(new NavigateToMessage(SelectedItem, Context));
+                ActivateItem(_adminTopicViewModel);
+            }
+            
         }
 
         public void SelectedItemDelete()
@@ -108,32 +159,42 @@ namespace TestingSystem.ViewModels
                 var newSection = new Section() { Title = newTitleSection };
                 var newPart = new Part() { Title = "Part 1", Section = newSection };
                 var newTopic = new Topic { Title = "Topic 1", Part = newPart };
+                var newQuestion = new Question() { Part = newPart };
+                var newAnswers = new List<Answer>() { new Answer() { Question = newQuestion } , new Answer() { Question = newQuestion } };
+
 
                 Context.Sections.Add(newSection);
                 Context.Parts.Add(newPart);
                 Context.Topics.Add(newTopic);
+                Context.Questions.Add(newQuestion);
+                Context.Answers.AddRange(newAnswers);
             }
             else
             if (SelectedItem is Part)
             {
-                int sectionId = SelectedItem.SectionId;
-                var countParts = Context.Parts.Count(part => part.SectionId == sectionId);
+                Section section = SelectedItem.Section;
+                var countParts = Context.Parts.Count(part => part.SectionId == section.SectionId);
                 var newTitlePart = $"Part ({++countParts})";
 
-                var newPart = new Part() { Title = newTitlePart, SectionId = sectionId };
+                var newPart = new Part() { Title = newTitlePart, Section = section };
                 var newTopic = new Topic { Title = "Topic 1", Part = newPart };
+                var newQuestion = new Question() { Part = newPart };
+                var newAnswers = new List<Answer>() { new Answer() { Question = newQuestion }, new Answer() { Question = newQuestion } };
+
 
                 Context.Parts.Add(newPart);
                 Context.Topics.Add(newTopic);
+                Context.Questions.Add(newQuestion);
+                Context.Answers.AddRange(newAnswers);
             }
             else
             if (SelectedItem is Topic)
             {
-                int partId = SelectedItem.PartId;
-                var countTopics = Context.Topics.Count(topic => topic.PartId == partId);
+                Part part = SelectedItem.Part;
+                var countTopics = Context.Topics.Count(topic => topic.PartId == part.PartId);
                 var newTitleTopic = $"Topic ({++countTopics})";
 
-                var newTopic = new Topic { Title = newTitleTopic, PartId = partId };
+                var newTopic = new Topic { Title = newTitleTopic, Part = part };
 
                 Context.Topics.Add(newTopic);
             }
@@ -147,6 +208,35 @@ namespace TestingSystem.ViewModels
             }
         }
 
+        public void QuestionAdd ()
+        {
+            var newQuestion = new Question() { Part = SelectedItem};
+            var newAnswers = new List<Answer>() { new Answer() { Question = newQuestion }, new Answer() { Question = newQuestion } };
+
+            Context.Questions.Add(newQuestion);
+            Context.Answers.AddRange(newAnswers);
+            Context.SaveChanges();
+            NumberQuestion = SelectedItem.Questions.Count;
+        }
+
+        public void QuestionDelete ()
+        {
+
+            Context.Questions.Remove(SelectedItem.Questions[NumberQuestion - 1]);
+            if (NumberQuestion == 1)
+                NumberQuestion = 1;
+            else
+                NumberQuestion--;
+            Context.SaveChanges();
+        }
+
+        public bool CanQuestionDelete
+        {
+            get
+            {
+                return SelectedItem?.Questions.Count == 1 ? false : true;
+            }
+        }
 
         bool isInEditMode = false;
         public bool IsInEditMode
@@ -166,7 +256,6 @@ namespace TestingSystem.ViewModels
             {
                 IsInEditMode = true;
                 e.Handled = true;
-
             }
         }
 
@@ -192,6 +281,34 @@ namespace TestingSystem.ViewModels
             IsInEditMode = false;
             SelectedItem.Title = obj.ToString();
             Context.SaveChanges();
+        }
+
+
+        public void NavigateToPreviousQuestion()
+        {
+            NumberQuestion--;
+        }
+
+        public void NavigateToNextQuestion()
+        {
+            NumberQuestion++;
+        }
+
+        public bool CanNavigateToPreviousQuestion
+        {
+            get { return NumberQuestion == 1 ? false : true; }
+        }
+
+        public bool CanNavigateToNextQuestion
+        {
+            get { return NumberQuestion == SelectedItem?.Questions.Count ? false : true; }
+        }
+
+        private void NavigateToQuestion (int index)
+        {
+            var question = SelectedItem.Questions[index];
+            _eventAggregator.PublishOnUIThread(new NavigateToMessage(question, Context));
+            ActivateItem(_adminQuestionViewModel);
         }
     }
 }

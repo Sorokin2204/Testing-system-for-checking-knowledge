@@ -25,14 +25,19 @@ namespace TestingSystem.TestingSystemDbContext
         public DbSet<Section> Sections { get; set; }
         public DbSet<Part> Parts { get; set; }
         public DbSet<Topic> Topics { get; set; }
-        
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.Add(new SectionConfig());
             modelBuilder.Configurations.Add(new PartConfig());
             modelBuilder.Configurations.Add(new TopicConfig());
-    
+            modelBuilder.Configurations.Add(new QuestionConfig());
+            modelBuilder.Configurations.Add(new AnswerConfig());
         }
     }
 }

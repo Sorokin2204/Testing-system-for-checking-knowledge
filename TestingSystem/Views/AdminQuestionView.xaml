@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="TestingSystem.Views.AdminQuestionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:converter="clr-namespace:TestingSystem.Converters"
+             xmlns:local="clr-namespace:TestingSystem.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" >
+    <UserControl.Resources>
+        <converter:NullImageConverter x:Key="nullImageConverter"/>
+
+        <DataTemplate x:Key="listAnswerTemplate">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton IsChecked="{Binding IsCorrect,Mode=TwoWay}" GroupName="Group" cal:Message.Attach="[Event Checked] = [Action ChangeAnswer]"/>
+                <TextBox Text="{Binding Text,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" cal:Message.Attach="[Event TextChanged] = [Action ChangeAnswer]" MinWidth="100" />
+                <Button IsEnabled="{Binding Path=DataContext.AnswerButtonDeleteIsEnabled,RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type UserControl}}}"  Content="{Binding Count}" cal:Message.Attach="[Event Click] = [Action AnswerDelete($dataContext)]">
+   
+                </Button>
+            </StackPanel>
+        </DataTemplate>
+
+    </UserControl.Resources>
+    <Grid>
+
+        <StackPanel>
+            <Button cal:Message.Attach="QuestioneImageChoice" Visibility="{Binding QuestionImageAddButtonVisibility}" Content="Добавить картинку" />
+            <Grid cal:Message.Attach="[Event MouseEnter] = [Action QuestionImageMouseEnter]; 
+                                      [Event MouseLeave] = [Action QuestionImageMouseLeave]">
+                <Image Source="{Binding QuestionImage, Converter={StaticResource nullImageConverter}}" />
+                <DockPanel Visibility="{Binding QuestionImageEditorVisibility}">
+                    <Button x:Name="QuestionImageDelete" DockPanel.Dock="Top" Content="Удалить"/>
+                    <Button cal:Message.Attach="QuestioneImageChoice" Content="Изменить"/>
+                </DockPanel>
+            </Grid>
+
+            <TextBox x:Name="QuestionText" md:HintAssist.Hint="Введите текст вопроса" />
+            <ItemsControl ItemTemplate="{StaticResource listAnswerTemplate}" 
+                     ItemsSource="{Binding QuestionAnswers,Mode=TwoWay}"/>
+            <Button cal:Message.Attach="[Event Click] = [Action AnswerAdd]">
+                <md:PackIcon Kind="Add"/>
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding QuestionAnswers.Count}" Value="4">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="SaveQuestion" Content="Сохранить"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

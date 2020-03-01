@@ -3,25 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestingSystem.TestingSystemDbContext;
 
 namespace TestingSystem
 {
-    public enum NavigationToEnum
+    public sealed class NavigateToMessage
     {
-        Login,
-        Admin,
-        User
-    }
-
-    public sealed class NavigateToViewModel
-    {
-        public NavigateToViewModel(NavigationToEnum navigationTo)
+        public NavigateToMessage(object message,TestingSystemContext context)
         {
-            NavigateTo = navigationTo;
+            Message = message;
+            Context = context;
         }
 
-        public NavigationToEnum NavigateTo { get; }
-    }
-       
-}
+        public object Message { get; }
 
+        public TestingSystemContext Context { get; }
+
+    }
+}

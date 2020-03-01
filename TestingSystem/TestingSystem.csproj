@@ -108,21 +108,31 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configs\AnswerConfig.cs" />
     <Compile Include="Configs\PartConfig.cs" />
+    <Compile Include="Configs\QuestionConfig.cs" />
     <Compile Include="Configs\SectionConfig.cs" />
     <Compile Include="Configs\TopicConfig.cs" />
     <Compile Include="Converters\NullImageConverter.cs" />
+    <Compile Include="DbComparer.cs" />
+    <Compile Include="Models\Answer.cs" />
+    <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Section.cs" />
     <Compile Include="NavigateToMessage.cs" />
+    <Compile Include="NavigateToViewModel.cs" />
     <Compile Include="TestingSystemDbContext\TestingSystemInitializer.cs" />
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="TestingSystemDbContext\TestingSystemContext.cs" />
+    <Compile Include="ViewModels\AdminQuestionViewModel.cs" />
     <Compile Include="ViewModels\AdminTopicViewModel.cs" />
     <Compile Include="ViewModels\AdminTreeViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UserTopicViewModel.cs" />
     <Compile Include="ViewModels\UserTreeViewModel.cs" />
+    <Compile Include="Views\AdminQuestionView.xaml.cs">
+      <DependentUpon>AdminQuestionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AdminTopicView.xaml.cs">
       <DependentUpon>AdminTopicView.xaml</DependentUpon>
     </Compile>
@@ -169,6 +179,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Views\AdminQuestionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AdminTopicView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
