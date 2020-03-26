@@ -7,9 +7,9 @@ using TestingSystem.TestingSystemDbContext;
 
 namespace TestingSystem
 {
-    public sealed class NavigateToMessage
+    public sealed class NavigateToMessageForUser
     {
-        public NavigateToMessage(object message,TestingSystemContext context)
+        public NavigateToMessageForUser(object message,TestingSystemContext context)
         {
             Message = message;
             Context = context;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestingSystem.Models;
 
 namespace TestingSystem
 {
@@ -10,7 +11,8 @@ namespace TestingSystem
     {
         Login,
         Admin,
-        User
+        User,
+        Test
     }
 
     public sealed class NavigateToViewModel
@@ -19,6 +21,24 @@ namespace TestingSystem
         {
             NavigateTo = navigationTo;
         }
+
+        public NavigateToViewModel(NavigationToEnum navigationTo,Account account)
+        {
+            NavigateTo = navigationTo;
+            Account = account;
+        }
+
+        public NavigateToViewModel(NavigationToEnum navigationTo, ICollection<Question> questions, Account account, Part part) : this(navigationTo,account)
+        {
+            Questions = questions;
+            Part = part;
+        }
+
+        public ICollection<Question> Questions { get; set; }
+
+        public Part Part { get; set; }
+
+        public Account Account { get; set; }
 
         public NavigationToEnum NavigateTo { get; }
     }

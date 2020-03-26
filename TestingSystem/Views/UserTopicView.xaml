@@ -13,7 +13,7 @@
     <Grid>
         <StackPanel>
             <TextBlock Text="{Binding Topic.Title}"/>
-            <Image Source ="{Binding Topic.Image}"/>
+            <Image  Style="{StaticResource BaseImage}" Source ="{Binding Topic.Image,Converter={StaticResource nullImageConverter}}"  MaxHeight="600" MaxWidth="600"/>
             <TextBlock Text="{Binding Topic.Text}"/>
         </StackPanel>
     </Grid>

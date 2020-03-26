@@ -26,9 +26,12 @@ namespace TestingSystem
 
         protected override void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterType<LoginViewModel>().SingleInstance();
             builder.RegisterType<ShellViewModel>().SingleInstance();
             builder.RegisterType<AdminTreeViewModel>().SingleInstance();
-            builder.RegisterType<UserTreeViewModel>().SingleInstance();
+            builder.RegisterType<UserTreeViewModel>().InstancePerDependency();
+
+
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)

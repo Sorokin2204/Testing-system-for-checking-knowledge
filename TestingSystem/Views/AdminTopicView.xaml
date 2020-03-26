@@ -15,18 +15,18 @@
     <Grid>
 
         <StackPanel>
-            <Button cal:Message.Attach="TopiceImageChoice" Visibility="{Binding TopicImageAddButtonVisibility}" Content="Добавить картинку"/>
+            <Button Style="{StaticResource BaseButton_1}"  cal:Message.Attach="TopiceImageChoice" Visibility="{Binding TopicImageAddButtonVisibility}" Content="Добавить картинку"/>
             <Grid cal:Message.Attach="[Event MouseEnter] = [Action TopicImageMouseEnter]; 
                                       [Event MouseLeave] = [Action TopicImageMouseLeave]">
-                <Image Source="{Binding TopicImage, Converter={StaticResource nullImageConverter}}" />
+                <Image Style="{StaticResource BaseImage}"  Source="{Binding TopicImage, Converter={StaticResource nullImageConverter}}" />
                 <DockPanel Visibility="{Binding TopicImageEditorVisibility}">
-                        <Button x:Name="TopicImageDelete" DockPanel.Dock="Top" Content="Удалить"/>
-                    <Button cal:Message.Attach="TopiceImageChoice" Content="Изменить"/>
+                    <Button Style="{StaticResource BaseButton_1}"  x:Name="TopicImageDelete" DockPanel.Dock="Top" Content="Удалить"/>
+                    <Button Style="{StaticResource BaseButton_1}" cal:Message.Attach="TopiceImageChoice" Content="Изменить"/>
                 </DockPanel>
             </Grid>
 
-            <TextBox x:Name="TopicText" md:HintAssist.Hint="Введите текст темы" />
-            <Button x:Name="TopicSave" Content="Сохранить"/>
+            <TextBox Style="{StaticResource MultiLineTextBox}" x:Name="TopicText" md:HintAssist.Hint="Введите текст темы" />
+            <Button Style="{StaticResource BaseButton_1}"  x:Name="TopicSave" Content="Сохранить"/>
 
         </StackPanel>
     </Grid>

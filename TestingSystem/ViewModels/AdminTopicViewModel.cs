@@ -13,7 +13,7 @@ using TestingSystem.TestingSystemDbContext;
 
 namespace TestingSystem.ViewModels
 {
-    class AdminTopicViewModel : Caliburn.Micro.Screen , IHandle<NavigateToMessage>
+    class AdminTopicViewModel : Caliburn.Micro.Screen , IHandle<NavigateToMessageForAdmin>
     {
         private readonly IEventAggregator _eventAggregator;
         private byte[] _topicImage;
@@ -137,7 +137,7 @@ namespace TestingSystem.ViewModels
             TopicImageEditorVisibility = Visibility.Collapsed;
         }
 
-        public void Handle(NavigateToMessage message)
+        public void Handle(NavigateToMessageForAdmin message)
         {
             if (message.Message is Topic)
             {

@@ -8,14 +8,38 @@ using TestingSystem.Models;
 
 namespace TestingSystem.ViewModels
 {
-    class UserTopicViewModel : Screen
+    class UserTopicViewModel : Screen , IHandle<NavigateToMessageForUser>
     {
-        public UserTopicViewModel(Topic topic)
+        private readonly IEventAggregator _eventAggregator;
+
+        public UserTopicViewModel(IEventAggregator eventAggregator,Topic topic)
         {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
             Topic = topic;
         }
 
-        public Topic Topic { get; set; }
+
+        private Topic _topic;
+
+        public Topic Topic
+        {
+            get { return _topic; }
+            set { _topic = value;
+                NotifyOfPropertyChange(() => Topic);
+            }
+        }
+
+      
+
+        public void Handle(NavigateToMessageForUser message)
+        {
+            //if (message.Message is Topic)
+            //{
+            //    Topic = message.Message as Topic;
+            //}
+
+        }
 
     }
 }

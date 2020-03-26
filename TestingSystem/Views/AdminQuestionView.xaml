@@ -14,11 +14,11 @@
 
         <DataTemplate x:Key="listAnswerTemplate">
             <StackPanel Orientation="Horizontal">
-                <RadioButton IsChecked="{Binding IsCorrect,Mode=TwoWay}" GroupName="Group" cal:Message.Attach="[Event Checked] = [Action ChangeAnswer]"/>
-                <TextBox Text="{Binding Text,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" cal:Message.Attach="[Event TextChanged] = [Action ChangeAnswer]" MinWidth="100" />
-                <Button IsEnabled="{Binding Path=DataContext.AnswerButtonDeleteIsEnabled,RelativeSource={RelativeSource FindAncestor, 
-                                             AncestorType={x:Type UserControl}}}"  Content="{Binding Count}" cal:Message.Attach="[Event Click] = [Action AnswerDelete($dataContext)]">
-   
+                <RadioButton Margin="8" IsChecked="{Binding IsCorrect,Mode=TwoWay}" GroupName="Group" cal:Message.Attach="[Event Checked] = [Action ChangeAnswer]"/>
+                <TextBox Style="{StaticResource BaseTextBox}" Text="{Binding Text,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" cal:Message.Attach="[Event TextChanged] = [Action ChangeAnswer]" MinWidth="100" />
+                <Button Style="{StaticResource MaterialDesignFlatButton}" IsEnabled="{Binding Path=DataContext.AnswerButtonDeleteIsEnabled,RelativeSource={RelativeSource FindAncestor, 
+                                             AncestorType={x:Type UserControl}}}"  cal:Message.Attach="[Event Click] = [Action AnswerDelete($dataContext)]" Margin="8">
+                    <md:PackIcon Kind="Delete"/>
                 </Button>
             </StackPanel>
         </DataTemplate>
@@ -27,17 +27,17 @@
     <Grid>
 
         <StackPanel>
-            <Button cal:Message.Attach="QuestioneImageChoice" Visibility="{Binding QuestionImageAddButtonVisibility}" Content="Добавить картинку" />
+            <Button Style="{StaticResource BaseButton_1}" cal:Message.Attach="QuestioneImageChoice" Visibility="{Binding QuestionImageAddButtonVisibility}" Content="Добавить картинку" />
             <Grid cal:Message.Attach="[Event MouseEnter] = [Action QuestionImageMouseEnter]; 
                                       [Event MouseLeave] = [Action QuestionImageMouseLeave]">
-                <Image Source="{Binding QuestionImage, Converter={StaticResource nullImageConverter}}" />
+                <Image Style="{StaticResource BaseImage}" Source="{Binding QuestionImage, Converter={StaticResource nullImageConverter}}" />
                 <DockPanel Visibility="{Binding QuestionImageEditorVisibility}">
-                    <Button x:Name="QuestionImageDelete" DockPanel.Dock="Top" Content="Удалить"/>
-                    <Button cal:Message.Attach="QuestioneImageChoice" Content="Изменить"/>
+                    <Button Style="{StaticResource BaseButton_1}" x:Name="QuestionImageDelete" DockPanel.Dock="Top" Content="Удалить"/>
+                    <Button Style="{StaticResource BaseButton_1}" cal:Message.Attach="QuestioneImageChoice" Content="Изменить"/>
                 </DockPanel>
             </Grid>
 
-            <TextBox x:Name="QuestionText" md:HintAssist.Hint="Введите текст вопроса" />
+            <TextBox Style="{StaticResource MultiLineTextBox}" x:Name="QuestionText" md:HintAssist.Hint="Введите текст вопроса" />
             <ItemsControl ItemTemplate="{StaticResource listAnswerTemplate}" 
                      ItemsSource="{Binding QuestionAnswers,Mode=TwoWay}"/>
             <Button cal:Message.Attach="[Event Click] = [Action AnswerAdd]">
@@ -52,7 +52,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="SaveQuestion" Content="Сохранить"/>
+            <Button Style="{StaticResource BaseButton_1}" x:Name="SaveQuestion" Content="Сохранить"/>
 
         </StackPanel>
     </Grid>

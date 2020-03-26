@@ -14,7 +14,7 @@ using TestingSystem.TestingSystemDbContext;
 
 namespace TestingSystem.ViewModels
 {
-    class AdminQuestionViewModel : Caliburn.Micro.Screen , IHandle<NavigateToMessage>
+    class AdminQuestionViewModel : Caliburn.Micro.Screen , IHandle<NavigateToMessageForAdmin>
     {
         private readonly IEventAggregator _eventAggregator;
         private byte[] _questionImage;
@@ -185,7 +185,7 @@ namespace TestingSystem.ViewModels
             NotifyOfPropertyChange(() => CanSaveQuestion);
         }
 
-        public void Handle(NavigateToMessage message)
+        public void Handle(NavigateToMessageForAdmin message)
         {
             if (message.Message is Question)
             {
@@ -216,9 +216,9 @@ namespace TestingSystem.ViewModels
                         .Where(c => c.AnswerId == childModel.AnswerId)
                         .SingleOrDefault();
 
-                    if (existingChild != null)
-
-                        Context.Entry(existingChild).CurrentValues.SetValues(childModel);
+                    if (existingChild != null && existingChild?.AnswerId != 0)
+            
+                            Context.Entry(existingChild).CurrentValues.SetValues(childModel);
                     else
                     {
 
@@ -226,7 +226,8 @@ namespace TestingSystem.ViewModels
                         {
                             Text = childModel.Text,
                             IsCorrect = childModel.IsCorrect,
-                            Question = existingParent
+                            Question = existingParent,
+                            QuestionId = existingParent.QuestionId 
                         };
                         existingParent.Answers.Add(newChild);
                     }

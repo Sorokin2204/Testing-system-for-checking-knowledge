@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,7 @@ using TestingSystem.Models;
 
 namespace TestingSystem.TestingSystemDbContext
 {
-    class TestingSystemInitializer : DropCreateDatabaseAlways<TestingSystemContext>
+    class TestingSystemInitializer : DropCreateDatabaseIfModelChanges<TestingSystemContext>
     {
         protected override void Seed(TestingSystemContext context)
         {
@@ -22,11 +23,18 @@ namespace TestingSystem.TestingSystemDbContext
             Answer answer1 = new Answer {  IsCorrect = true, Question = q1 };
             Answer answer2 = new Answer {  IsCorrect = false, Question = q1 };
 
+            Group group1 = new Group { Title = "Group 1" };
+            Group group2 = new Group { Title = "Group 2" };
+            Group group3 = new Group { Title = "Group 3" };
+            Group group4 = new Group { Title = "Group 4" };
+
+
             context.Sections.Add(s1);
             context.Parts.Add(p1);
             context.Topics.Add(t1);
             context.Questions.Add(q1);
-            context.Answers.AddRange(new List<Answer> { answer1, answer2});
+            context.Answers.AddRange(new ObservableCollection<Answer> { answer1, answer2});
+            context.Groups.AddRange(new List<Group> { group1, group2, group3, group4 });
 
             context.SaveChanges();
         }

@@ -20,6 +20,8 @@ namespace TestingSystem.Models
         public virtual ICollection<Topic> Topics { get; set; }
         public virtual ICollection<Question> Questions {get; set; }
 
+        public virtual ICollection<TestPart> TestParts { get; }
+
         public Part()
         {
             Topics = new ObservableCollection<Topic>();

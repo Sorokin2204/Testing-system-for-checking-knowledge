@@ -108,17 +108,25 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configs\AccountConfig.cs" />
     <Compile Include="Configs\AnswerConfig.cs" />
+    <Compile Include="Configs\GroupConfig.cs" />
     <Compile Include="Configs\PartConfig.cs" />
     <Compile Include="Configs\QuestionConfig.cs" />
     <Compile Include="Configs\SectionConfig.cs" />
     <Compile Include="Configs\TopicConfig.cs" />
     <Compile Include="Converters\NullImageConverter.cs" />
     <Compile Include="DbComparer.cs" />
+    <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Answer.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Section.cs" />
-    <Compile Include="NavigateToMessage.cs" />
+    <Compile Include="Models\TestPart.cs" />
+    <Compile Include="NavigateForUser.cs" />
+    <Compile Include="NavigateToMessageForUser.cs" />
+    <Compile Include="NavigateToMessageForAdmin.cs" />
+    <Compile Include="NavigateToTest.cs" />
     <Compile Include="NavigateToViewModel.cs" />
     <Compile Include="TestingSystemDbContext\TestingSystemInitializer.cs" />
     <Compile Include="Models\Part.cs" />
@@ -127,7 +135,10 @@
     <Compile Include="ViewModels\AdminQuestionViewModel.cs" />
     <Compile Include="ViewModels\AdminTopicViewModel.cs" />
     <Compile Include="ViewModels\AdminTreeViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\UserPreviewTestViewModel.cs" />
+    <Compile Include="ViewModels\UserTestViewModel.cs" />
     <Compile Include="ViewModels\UserTopicViewModel.cs" />
     <Compile Include="ViewModels\UserTreeViewModel.cs" />
     <Compile Include="Views\AdminQuestionView.xaml.cs">
@@ -139,8 +150,17 @@
     <Compile Include="Views\AdminTreeView.xaml.cs">
       <DependentUpon>AdminTreeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserPreviewTestView.xaml.cs">
+      <DependentUpon>UserPreviewTestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserTestView.xaml.cs">
+      <DependentUpon>UserTestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserTopicView.xaml.cs">
       <DependentUpon>UserTopicView.xaml</DependentUpon>
@@ -179,6 +199,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AdminQuestionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -191,7 +215,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserPreviewTestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserTestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

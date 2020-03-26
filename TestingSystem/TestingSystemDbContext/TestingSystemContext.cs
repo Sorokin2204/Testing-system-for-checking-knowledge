@@ -28,7 +28,11 @@ namespace TestingSystem.TestingSystemDbContext
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
 
+        public DbSet<Account> Accounts { get; set; }
 
+        public DbSet<Group> Groups { get; set; }
+
+        public DbSet<TestPart> TestParts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -38,6 +42,8 @@ namespace TestingSystem.TestingSystemDbContext
             modelBuilder.Configurations.Add(new TopicConfig());
             modelBuilder.Configurations.Add(new QuestionConfig());
             modelBuilder.Configurations.Add(new AnswerConfig());
+            modelBuilder.Configurations.Add(new AccountConfig());
+            modelBuilder.Configurations.Add(new GroupConfig());
         }
     }
 }

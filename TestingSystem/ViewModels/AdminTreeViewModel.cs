@@ -87,6 +87,7 @@ namespace TestingSystem.ViewModels
             if(SelectedItem is Section)
             {
                 CountQuestionsVisibility = Visibility.Collapsed;
+                ActivateItem(null);
             }
             if(SelectedItem is Part)
             {
@@ -97,7 +98,7 @@ namespace TestingSystem.ViewModels
             if (SelectedItem is Topic)
             {
                 CountQuestionsVisibility = Visibility.Collapsed;
-                _eventAggregator.PublishOnUIThread(new NavigateToMessage(SelectedItem, Context));
+                _eventAggregator.PublishOnUIThread(new NavigateToMessageForAdmin(SelectedItem, Context));
                 ActivateItem(_adminTopicViewModel);
             }
             
@@ -283,6 +284,10 @@ namespace TestingSystem.ViewModels
             Context.SaveChanges();
         }
 
+        public void Exit ()
+        {
+            _eventAggregator.PublishOnUIThread(new NavigateToViewModel(NavigationToEnum.Login));
+        }
 
         public void NavigateToPreviousQuestion()
         {
@@ -307,7 +312,7 @@ namespace TestingSystem.ViewModels
         private void NavigateToQuestion (int index)
         {
             var question = SelectedItem.Questions[index];
-            _eventAggregator.PublishOnUIThread(new NavigateToMessage(question, Context));
+            _eventAggregator.PublishOnUIThread(new NavigateToMessageForAdmin(question, Context));
             ActivateItem(_adminQuestionViewModel);
         }
     }
